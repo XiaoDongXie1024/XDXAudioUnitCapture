@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-
+#import "XDXAudioCaptureManager.h"
+#import <AVFoundation/AVFoundation.h>
 @interface ViewController ()
 
 @end
@@ -16,8 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [[XDXAudioCaptureManager getInstance] startAudioCapture];
 }
 
+- (IBAction)startRecord:(id)sender {
+    [[XDXAudioCaptureManager getInstance] startRecordFile];
+}
+
+- (IBAction)stopRecord:(id)sender {
+    [[XDXAudioCaptureManager getInstance] stopRecordFile];
+}
+
+- (void)dealloc {
+    [[XDXAudioCaptureManager getInstance] stopAudioCapture];
+}
 
 @end

@@ -13,6 +13,9 @@
 		48BD2FCD22852348005617E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48BD2FCC22852348005617E0 /* Assets.xcassets */; };
 		48BD2FD022852348005617E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48BD2FCE22852348005617E0 /* LaunchScreen.storyboard */; };
 		48BD2FD322852348005617E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD2FD222852348005617E0 /* main.m */; };
+		48BD2FDC228527A7005617E0 /* XDXAudioCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD2FDB228527A7005617E0 /* XDXAudioCaptureManager.m */; };
+		48BD2FDF22852B16005617E0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BD2FDE22852B15005617E0 /* AudioToolbox.framework */; };
+		48BD2FE322857BF5005617E0 /* XDXAudioFileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BD2FE122857BF5005617E0 /* XDXAudioFileHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,12 @@
 		48BD2FCF22852348005617E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48BD2FD122852348005617E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48BD2FD222852348005617E0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		48BD2FDA228527A7005617E0 /* XDXAudioCaptureManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XDXAudioCaptureManager.h; sourceTree = "<group>"; };
+		48BD2FDB228527A7005617E0 /* XDXAudioCaptureManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XDXAudioCaptureManager.m; sourceTree = "<group>"; };
+		48BD2FDE22852B15005617E0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		48BD2FE022856AFA005617E0 /* XDXSingleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XDXSingleton.h; sourceTree = "<group>"; };
+		48BD2FE122857BF5005617E0 /* XDXAudioFileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDXAudioFileHandler.m; sourceTree = "<group>"; };
+		48BD2FE222857BF5005617E0 /* XDXAudioFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XDXAudioFileHandler.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BD2FDF22852B16005617E0 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +54,7 @@
 			children = (
 				48BD2FC222852346005617E0 /* XDXAudioUnitCapture */,
 				48BD2FC122852346005617E0 /* Products */,
+				48BD2FDD22852B15005617E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +69,7 @@
 		48BD2FC222852346005617E0 /* XDXAudioUnitCapture */ = {
 			isa = PBXGroup;
 			children = (
+				48BD2FD92285276B005617E0 /* Audio */,
 				48BD2FC322852346005617E0 /* AppDelegate.h */,
 				48BD2FC422852346005617E0 /* AppDelegate.m */,
 				48BD2FC622852346005617E0 /* ViewController.h */,
@@ -67,8 +79,28 @@
 				48BD2FCE22852348005617E0 /* LaunchScreen.storyboard */,
 				48BD2FD122852348005617E0 /* Info.plist */,
 				48BD2FD222852348005617E0 /* main.m */,
+				48BD2FE022856AFA005617E0 /* XDXSingleton.h */,
 			);
 			path = XDXAudioUnitCapture;
+			sourceTree = "<group>";
+		};
+		48BD2FD92285276B005617E0 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				48BD2FE222857BF5005617E0 /* XDXAudioFileHandler.h */,
+				48BD2FE122857BF5005617E0 /* XDXAudioFileHandler.m */,
+				48BD2FDA228527A7005617E0 /* XDXAudioCaptureManager.h */,
+				48BD2FDB228527A7005617E0 /* XDXAudioCaptureManager.m */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		48BD2FDD22852B15005617E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				48BD2FDE22852B15005617E0 /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,7 +173,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BD2FDC228527A7005617E0 /* XDXAudioCaptureManager.m in Sources */,
 				48BD2FC822852346005617E0 /* ViewController.m in Sources */,
+				48BD2FE322857BF5005617E0 /* XDXAudioFileHandler.m in Sources */,
 				48BD2FD322852348005617E0 /* main.m in Sources */,
 				48BD2FC522852346005617E0 /* AppDelegate.m in Sources */,
 			);
@@ -220,7 +254,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -273,7 +307,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
