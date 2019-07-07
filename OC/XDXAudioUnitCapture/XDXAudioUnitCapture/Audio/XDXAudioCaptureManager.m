@@ -8,8 +8,6 @@
 
 #import "XDXAudioCaptureManager.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import "XDXAudioFileHandler.h"
-#import <AVFoundation/AVFoundation.h>
 
 #define kXDXAudioPCMFramesPerPacket 1
 #define KXDXAudioBitsPerChannel 16
@@ -26,7 +24,7 @@ static AudioStreamBasicDescription  m_audioDataFormat;
 @interface XDXAudioCaptureManager ()
 
 @property (nonatomic, assign, readwrite) BOOL isRunning;
-@property (nonatomic, assign) BOOL isRecordVoice;
+
 @end
 
 @implementation XDXAudioCaptureManager
@@ -54,17 +52,20 @@ static OSStatus AudioCaptureCallback(void                       *inRefCon,
     
     //    NSLog(@"demon = %d",bufferSize);
     
-    if (manager.isRecordVoice) {
-        [[XDXAudioFileHandler getInstance] writeFileWithInNumBytes:bufferSize
-                                                      ioNumPackets:inNumberFrames
-                                                          inBuffer:bufferData
-                                                      inPacketDesc:NULL];
-    }
+    struct XDXCaptureAudioData audioData = {
+        .data           = bufferData,
+        .size           = bufferSize,
+        .inNumberFrames = inNumberFrames,
+    };
     
+    XDXCaptureAudioDataRef audioDataRef = &audioData;
+    
+    if ([manager.delegate respondsToSelector:@selector(receiveAudioDataByDevice:)]) {
+        [manager.delegate receiveAudioDataByDevice:audioDataRef];
+    }
+        
     return noErr;
 }
-
-
 
 #pragma mark - Public
 + (instancetype)getInstance {
@@ -84,6 +85,9 @@ static OSStatus AudioCaptureCallback(void                       *inRefCon,
 - (void)freeAudioUnit {
     [self freeAudioUnit:m_audioUnit];
     self.isRunning = NO;
+}
+- (AudioStreamBasicDescription)getAudioDataFormat {
+    return m_audioDataFormat;
 }
 
 #pragma mark - Init
@@ -342,20 +346,6 @@ static OSStatus AudioCaptureCallback(void                       *inRefCon,
 
     memcpy(audioFormat, &dataFormat, sizeof(dataFormat));
     NSLog(@"%@:  %s - sample rate:%f, channel count:%d",kModuleName, __func__,sampleRate,channelCount);
-}
-
-#pragma mark - Record
-- (void)startRecordFile {
-    [[XDXAudioFileHandler getInstance] startVoiceRecordByAudioUnitByAudioConverter:nil
-                                                                   needMagicCookie:NO
-                                                                         audioDesc:m_audioDataFormat];
-    self.isRecordVoice = YES;
-}
-
-- (void)stopRecordFile {
-    self.isRecordVoice = NO;
-    [[XDXAudioFileHandler getInstance] stopVoiceRecordAudioConverter:nil
-                                                     needMagicCookie:NO];
 }
 
 @end

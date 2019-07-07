@@ -9,7 +9,11 @@
 #import "ViewController.h"
 #import "XDXAudioCaptureManager.h"
 #import <AVFoundation/AVFoundation.h>
-@interface ViewController ()
+#import "XDXAudioFileHandler.h"
+
+@interface ViewController ()<XDXAudioCaptureDelegate>
+
+@property (nonatomic, assign) BOOL isRecordVoice;
 
 @end
 
@@ -17,19 +21,44 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [XDXAudioCaptureManager getInstance].delegate = self;
     [[XDXAudioCaptureManager getInstance] startAudioCapture];
 }
 
 - (IBAction)startRecord:(id)sender {
-    [[XDXAudioCaptureManager getInstance] startRecordFile];
+    [self startRecordFile];
 }
 
 - (IBAction)stopRecord:(id)sender {
-    [[XDXAudioCaptureManager getInstance] stopRecordFile];
+    [self stopRecordFile];
 }
 
 - (void)dealloc {
     [[XDXAudioCaptureManager getInstance] stopAudioCapture];
+}
+#pragma mark - Record
+- (void)startRecordFile {
+    AudioStreamBasicDescription audioFormat = [[XDXAudioCaptureManager getInstance] getAudioDataFormat];
+    [[XDXAudioFileHandler getInstance] startVoiceRecordByAudioUnitByAudioConverter:nil
+                                                                   needMagicCookie:NO
+                                                                         audioDesc:audioFormat];
+    self.isRecordVoice = YES;
+}
+
+- (void)stopRecordFile {
+    self.isRecordVoice = NO;
+    [[XDXAudioFileHandler getInstance] stopVoiceRecordAudioConverter:nil
+                                                     needMagicCookie:NO];
+}
+#pragma mark - Delegate
+- (void)receiveAudioDataByDevice:(XDXCaptureAudioDataRef)audioDataRef {
+    if (self.isRecordVoice) {
+        [[XDXAudioFileHandler getInstance] writeFileWithInNumBytes:audioDataRef->size
+                                                      ioNumPackets:audioDataRef->inNumberFrames
+                                                          inBuffer:audioDataRef->data
+                                                      inPacketDesc:NULL];
+    }
+    
 }
 
 @end
