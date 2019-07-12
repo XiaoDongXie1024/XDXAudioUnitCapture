@@ -21,6 +21,8 @@ static AudioUnit                    m_audioUnit;
 static AudioBufferList              *m_buffList;
 static AudioStreamBasicDescription  m_audioDataFormat;
 
+uint32_t g_av_base_time = 100;
+
 @interface XDXAudioCaptureManager ()
 
 @property (nonatomic, assign, readwrite) BOOL isRunning;
@@ -38,7 +40,14 @@ static OSStatus AudioCaptureCallback(void                       *inRefCon,
                                      AudioBufferList            *ioData) {
     AudioUnitRender(m_audioUnit, ioActionFlags, inTimeStamp, inBusNumber, inNumberFrames, m_buffList);
     
+    if (g_av_base_time == 0) {
+        return noErr;
+    }
+    
     XDXAudioCaptureManager *manager = (__bridge XDXAudioCaptureManager *)inRefCon;
+    
+    Float64 currentTime = CMTimeGetSeconds(CMClockMakeHostTimeFromSystemUnits(inTimeStamp->mHostTime));
+    int64_t pts = (int64_t)((currentTime - g_av_base_time) * 1000);
     
     /*  Test audio fps
      static Float64 lastTime = 0;
@@ -56,6 +65,7 @@ static OSStatus AudioCaptureCallback(void                       *inRefCon,
         .data           = bufferData,
         .size           = bufferSize,
         .inNumberFrames = inNumberFrames,
+        .pts            = pts,
     };
     
     XDXCaptureAudioDataRef audioDataRef = &audioData;

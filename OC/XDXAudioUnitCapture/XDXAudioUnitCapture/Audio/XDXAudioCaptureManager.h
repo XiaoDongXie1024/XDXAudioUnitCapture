@@ -15,6 +15,7 @@ struct XDXCaptureAudioData {
     void    *data;
     int     size;
     UInt32  inNumberFrames;
+    int64_t pts;
 };
 
 typedef struct XDXCaptureAudioData* XDXCaptureAudioDataRef;
